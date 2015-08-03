@@ -17,14 +17,19 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/framework-bundle": ">=2.1,<2.4-dev"
+        "symfony/framework-bundle": "~2.1"
     },
     "suggest": {
-        "doctrine/orm": ">=2.1.*",
-        "doctrine/mongodb-odm": "*"
+        "doctrine/orm": ">=2.1",
+        "doctrine/mongodb-odm": "1.0.*@dev"
     },
     "autoload":     {
         "psr-0": { "Lexik\\Bundle\\TranslationBundle": "" }
     },
-    "target-dir": "Lexik/Bundle/TranslationBundle"
+    "target-dir": "Lexik/Bundle/TranslationBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-jqgrid_ui": "1.4.x-dev"
+        }
+    }
 }
