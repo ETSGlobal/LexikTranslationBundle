@@ -20,6 +20,13 @@ interface StorageInterface
     public function persist($entity);
 
     /**
+     * Remove the given object.
+     *
+     * @param object $entity
+     */
+    public function remove($entity);
+
+    /**
      * Flush changes.
      *
      * @param string $entity

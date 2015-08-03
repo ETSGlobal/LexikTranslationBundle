@@ -122,7 +122,9 @@ class TransUnitManager implements TransUnitManagerInterface
         $found = false;
 
         while ($i<$end && !$found) {
-            $found = ($transUnit->getTranslations()->get($i)->getLocale() == $locale);
+            if (null !== $transUnit->getTranslations()->get($i)) {
+                $found = ($transUnit->getTranslations()->get($i)->getLocale() == $locale);
+            }
             $i++;
         }
 
@@ -139,6 +141,35 @@ class TransUnitManager implements TransUnitManagerInterface
     }
 
     /**
+     *
+     * @param \Lexik\Bundle\TranslationBundle\Model\TransUnit $transUnit
+     * @param string                                          $locale
+     * @param boolean                                         $flush
+     */
+    public function removeTranslation(TransUnit $transUnit, $locale, $flush = false)
+    {
+        $translation = null;
+        $i = 0;
+        $end = $transUnit->getTranslations()->count();
+        $found = false;
+
+        while ($i<$end && !$found) {
+            $found = ($transUnit->getTranslations()->get($i)->getLocale() == $locale);
+            $i++;
+        }
+
+        if ($found) {
+            $translation = $transUnit->getTranslations()->get($i-1);
+            $transUnit->removeTranslation($translation);
+            $this->storage->remove($translation);
+
+            if ($flush) {
+                $this->storage->flush();
+            }
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function updateTranslationsContent(TransUnit $transUnit, array $translations, $flush = false)
@@ -151,6 +182,10 @@ class TransUnitManager implements TransUnitManagerInterface
                     //We need to get a proper file for this translation
                     $file = $this->getTranslationFile($transUnit, $locale);
                     $this->addTranslation($transUnit, $locale, $content, $file);
+                }
+            } else {
+                if ($transUnit->hasTranslation($locale)) {
+                    $this->removeTranslation($transUnit, $locale);
                 }
             }
         }

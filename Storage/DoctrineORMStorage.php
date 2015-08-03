@@ -64,6 +64,14 @@ class DoctrineORMStorage implements StorageInterface
     /**
      * {@inheritdoc}
      */
+    public function remove($entity)
+    {
+         $this->em->remove($entity);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getModelClass($name)
     {
         if ( !isset($this->classes[$name]) ) {
